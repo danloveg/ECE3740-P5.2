@@ -10,17 +10,17 @@ import java.util.concurrent.ExecutorService;
  */
 public class UserCommandInvoker implements commandinterface.Command {
     private commandinterface.Command userCommand;
-    // private final cmd.UserCommandReceiver commandReceiver;
+    private final cmd.UserCommandReceiver commandReceiver;
     private final userinterface.Userinterface UI;
-    private final client.Client myClient;
+    // private final client.Client myClient;
     private final ExecutorService executor;
 
     public UserCommandInvoker(userinterface.Userinterface ui, client.Client client) {
         this.UI = ui;
         // Allow four threads to be ran concurrently
         this.executor = Executors.newFixedThreadPool(4);
-        myClient = client;
-        // this.commandReceiver = new cmd.UserCommandReceiver(ui, client);
+        // myClient = client;
+        this.commandReceiver = new cmd.UserCommandReceiver(ui, client);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class UserCommandInvoker implements commandinterface.Command {
                                 newObject.getDeclaredConstructor(parameters);
 
                         // Create a new instance of the Class
-                        userCommand = objCtor.newInstance(new UserCommandReceiver(UI, myClient));
+                        userCommand = objCtor.newInstance(commandReceiver);
 
                         // Execute the command
                         userCommand.execute(secureCommand);
