@@ -24,7 +24,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/ip_address_update"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/port_number_update"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/portNumberField"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -56,7 +56,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="@string/connect_button"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/disconnectButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:text="@string/disconnect_button"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/quitButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/connectButton"
@@ -83,7 +83,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="29dp"
         android:text="@string/quit_button"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/disconnectButton"
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text="@string/startup_message"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectButton" />
@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tempButton"
         app:layout_constraintStart_toEndOf="@+id/tempButton" />
 
@@ -114,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/led3ToggleButton"
         app:layout_constraintStart_toEndOf="@+id/gpb1Button"
         app:layout_constraintTop_toBottomOf="@+id/led1ToggleButton" />
@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/led4ToggleButton"
         app:layout_constraintStart_toEndOf="@+id/gpb2Button"
         app:layout_constraintTop_toBottomOf="@+id/led2ToggleButton" />
@@ -134,7 +134,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/gpb3Button"
         app:layout_constraintTop_toBottomOf="@+id/led3ToggleButton" />
@@ -145,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/led1"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/led1ToggleButton"
         app:layout_constraintStart_toEndOf="@+id/led1ToggleButton" />
 
@@ -155,7 +155,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/led2"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/led2ToggleButton"
         app:layout_constraintStart_toEndOf="@+id/led2ToggleButton" />
 
@@ -165,7 +165,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/led3"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/led3ToggleButton"
         app:layout_constraintStart_toEndOf="@+id/led3ToggleButton" />
 
@@ -175,7 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/led4"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/led4ToggleButton"
         app:layout_constraintStart_toEndOf="@+id/led4ToggleButton" />
 
@@ -186,7 +186,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/temp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/gpb1Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/messageTextArea" />
@@ -197,7 +197,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/gpb1"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/gpb2Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tempButton" />
@@ -208,7 +208,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/gpb2"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/gpb3Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gpb1Button" />
@@ -219,7 +219,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/gpb3"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gpb2Button" />

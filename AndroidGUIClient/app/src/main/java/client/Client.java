@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
  * @author Daniel Lovegrove
  */
 public class Client implements Runnable {
-    private static final int TIMEOUT_MILLIS = 1000;
+    private static final int TIMEOUT_MILLIS = 2000;
 
     private int portNumber;
     private Socket clientSocket = null;
@@ -29,41 +29,21 @@ public class Client implements Runnable {
      * @param portNumber The port number
      * @param ui The user interface
      */
-    public Client(int portNumber, userinterface.Userinterface ui) {
+    public Client(int portNumber, userinterface.Userinterface ui, InetAddress ipAddress) {
         this.portNumber = portNumber;
         this.UI = ui;
-    }
-
-
-    /**
-     * Connect to the server using the local host.
-     * @throws IOException
-     * @throws SocketTimeoutException
-     */
-    public void connectToServerLocally() throws IOException {
-        connectToServer(InetAddress.getLocalHost());
-    }
-
-
-    /**
-     * Connect to a server using the IP address.
-     * @param IP The IP address to connect to in String format
-     * @throws IOException
-     * @throws SocketTimeoutException
-     */
-    public void connectToServerIP(String IP) throws IOException {
-        connectToServer(InetAddress.getByName(IP));
+        this.ipAddress = ipAddress;
     }
 
 
     // Connect to the server at the address and port number
-    private void connectToServer(InetAddress address) throws IOException {
+    public void connectToServer() throws IOException {
         if (false == getConnected()) {
             // Create a socket
             clientSocket = new Socket();
 
             // Try to connect to the server
-            clientSocket.connect(new InetSocketAddress(address, portNumber), TIMEOUT_MILLIS);
+            clientSocket.connect(new InetSocketAddress(ipAddress, portNumber), TIMEOUT_MILLIS);
 
             // Create a new command handler
             this.commandHandler = new ServerMessageHandler(clientSocket);
@@ -204,6 +184,9 @@ public class Client implements Runnable {
     // -------------------------------------------------------------------------
     public void setPort(int newPort) { portNumber = newPort; }
     public int getPort()             { return portNumber; }
+
+    public void setIpAddress(InetAddress newAddress) { ipAddress = newAddress; }
+    public InetAddress getIpAddress() { return ipAddress; }
 
     public synchronized void setConnected(boolean connected) { this.connected = connected; }
     public synchronized boolean getConnected() { return connected; }

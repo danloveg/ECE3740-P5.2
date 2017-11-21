@@ -27,7 +27,7 @@ public class UserCommandReceiver {
         if (false == myClient.getConnected()) {
             try {
                 // Try to connect to server
-                myClient.connectToServerIP("192.168.1.214");
+                myClient.connectToServer();
                 // Then create the Client Thread and start it
                 Thread clientThread = new Thread(myClient);
                 clientThread.start();

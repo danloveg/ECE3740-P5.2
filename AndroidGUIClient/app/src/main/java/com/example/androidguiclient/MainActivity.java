@@ -41,8 +41,16 @@ public class MainActivity extends AppCompatActivity
         // Create a Handler
         handler = new MyHandler(this);
 
-        // Instantiate a new Client with port number 5555 to start.
-        myClient = new client.Client(5555, this);
+        // Try to get an address for the Client
+        InetAddress clientAddress = null;
+        try {
+            clientAddress = InetAddress.getByName("10.0.2.2");
+        } catch (UnknownHostException e) {
+            this.update("Could not create emulator address 10.0.2.2");
+        }
+
+        // Instantiate a new Client with port number 8765 to start.
+        myClient = new client.Client(8765, this, clientAddress);
 
         // Instantiate a new command handler
         commandHandler = new cmd.UserCommandInvoker(this, this.myClient);
@@ -83,7 +91,14 @@ public class MainActivity extends AppCompatActivity
      * @param newIPAddress The string containing the port number
      */
     private void setClientIPAddress(String newIPAddress) {
-        this.update("NOT new ip: " + newIPAddress);
+        // Try to create a new IP address
+        try {
+            InetAddress address = InetAddress.getByName(newIPAddress);
+            myClient.setIpAddress(address);
+            this.update("IP set to: " + newIPAddress);
+        } catch (UnknownHostException e) {
+            this.update("Could not create IP: " + newIPAddress);
+        }
     }
 
 
