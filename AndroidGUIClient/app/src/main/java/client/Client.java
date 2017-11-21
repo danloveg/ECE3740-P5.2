@@ -18,6 +18,7 @@ public class Client implements Runnable {
 
     private int portNumber;
     private Socket clientSocket = null;
+    private InetAddress ipAddress = null;
     private final userinterface.Userinterface UI;
     private servermessagehandler.ServerMessageHandler commandHandler;
     private boolean connected = false;
@@ -39,7 +40,7 @@ public class Client implements Runnable {
      * @throws IOException
      * @throws SocketTimeoutException
      */
-    public void connectToServerLocally() throws IOException, SocketTimeoutException {
+    public void connectToServerLocally() throws IOException {
         connectToServer(InetAddress.getLocalHost());
     }
 
@@ -50,13 +51,13 @@ public class Client implements Runnable {
      * @throws IOException
      * @throws SocketTimeoutException
      */
-    public void connectToServerIP(String IP) throws IOException, SocketTimeoutException {
+    public void connectToServerIP(String IP) throws IOException {
         connectToServer(InetAddress.getByName(IP));
     }
 
 
     // Connect to the server at the address and port number
-    private void connectToServer(InetAddress address) throws IOException, SocketTimeoutException {
+    private void connectToServer(InetAddress address) throws IOException {
         if (false == getConnected()) {
             // Create a socket
             clientSocket = new Socket();

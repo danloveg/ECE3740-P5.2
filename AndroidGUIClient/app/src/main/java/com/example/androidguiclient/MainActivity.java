@@ -8,12 +8,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import org.w3c.dom.Text;
 
 import java.lang.ref.WeakReference;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,13 +41,12 @@ public class MainActivity extends AppCompatActivity
         // Create a Handler
         handler = new MyHandler(this);
 
-        // Instantiate a new Client with port number 7777 to start.
-        myClient = new client.Client(7777, this);
+        // Instantiate a new Client with port number 5555 to start.
+        myClient = new client.Client(5555, this);
 
         // Instantiate a new command handler
         commandHandler = new cmd.UserCommandInvoker(this, this.myClient);
     }
-
 
 
     /**
@@ -56,6 +58,32 @@ public class MainActivity extends AppCompatActivity
         Message msg = Message.obtain();
         msg.obj = message;
         handler.sendMessage(msg);
+    }
+
+
+    /**
+     * Try to set the Client's port to a new number. Converts the string to a number and uses that
+     * as the new port number. If there is a NumberFormatException, it will not update the port.
+     * @param newPortNumber The string containing the port number
+     */
+    private void setClientPort(String newPortNumber) {
+        try {
+            int port = Integer.parseInt(newPortNumber);
+            myClient.setPort(port);
+            this.update("Port number set to " + newPortNumber);
+        } catch (NumberFormatException e) {
+            this.update(newPortNumber + " is not a number.");
+        }
+    }
+
+
+    /**
+     * Try to set the Client's ip to a new address. Tries to convert the string to an address, if
+     * there is a NumberFormatException, it will not update the port.
+     * @param newIPAddress The string containing the port number
+     */
+    private void setClientIPAddress(String newIPAddress) {
+        this.update("NOT new ip: " + newIPAddress);
     }
 
 
@@ -107,10 +135,14 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.updateIPButton:
-                update("IP Address Button Clicked.");
+                String newIPAddress =
+                        ((TextView) findViewById(R.id.ipAddressField)).getText().toString();
+                setClientIPAddress(newIPAddress);
                 break;
             case R.id.updatePortButton:
-                update("Port Button Clicked.");
+                String newPortNumber =
+                        ((TextView) findViewById(R.id.portNumberField)).getText().toString();
+                setClientPort(newPortNumber);
                 break;
             case R.id.connectButton:
                 commandHandler.execute("connect");
