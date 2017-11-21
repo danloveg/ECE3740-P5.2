@@ -1,56 +1,51 @@
 package com.example.androidguiclient;
 
+import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import org.w3c.dom.Text;
+
+import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity
-        implements userinterface.Userinterface, View.OnClickListener {
+        implements userinterface.Userinterface, View.OnClickListener,
+        android.widget.CompoundButton.OnCheckedChangeListener {
+
+    private client.Client myClient;
+    private commandinterface.Command commandHandler;
+    private MyHandler handler;
+    protected TextView serverMessageTextArea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setButtonClickListeners();
+        setEventListeners();
+
+        // Set the text area instance
+        serverMessageTextArea = findViewById(R.id.messageTextArea);
+
+        // Create a Handler
+        handler = new MyHandler(this);
+
+        // Instantiate a new Client with port number 7777 to start.
+        myClient = new client.Client(7777, this);
+
+        // Instantiate a new command handler
+        commandHandler = new cmd.UserCommandInvoker(this, this.myClient);
     }
 
-    @Override
-    public void onClick(final View view) {
-        switch (view.getId()) {
-            case R.id.updateIPButton:
-                update("IP Address Button Clicked.");
-                break;
-            case R.id.updatePortButton:
-                update("Port Button Clicked.");
-                break;
-            case R.id.connectButton:
-                update("Connect Button Clicked.");
-                break;
-            case R.id.disconnectButton:
-                update("Disconnect Button Clicked.");
-                break;
-            case R.id.quitButton:
-                update("Quit Button Clicked.");
-                break;
-            case R.id.tempButton:
-                update("Temp Button Clicked.");
-                break;
-            case R.id.gpb1Button:
-                update("GPB1 Button Clicked.");
-                break;
-            case R.id.gpb2Button:
-                update("GPB2 Button Clicked.");
-                break;
-            case R.id.gpb3Button:
-                update("GPB3 Button Clicked.");
-                break;
-        }
-    }
+
 
     /**
      * Update the message text area with a new message.
@@ -58,17 +53,20 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void update(String message) {
-        TextView textView = findViewById(R.id.messageTextArea);
-        textView.setText(message);
+        Message msg = Message.obtain();
+        msg.obj = message;
+        handler.sendMessage(msg);
     }
 
 
     /**
-     * Set the click listeners of all the Buttons to this.
+     * Set the click listeners of all the Buttons and ToggleButtons to this.
      */
-    private void setButtonClickListeners() {
+    private void setEventListeners() {
         Button currentButton;
+        ToggleButton currentToggleButton;
 
+        // Set up regular buttons
         currentButton = findViewById(R.id.updateIPButton);
         currentButton.setOnClickListener(this); // calling onClick() method
         currentButton = findViewById(R.id.updatePortButton);
@@ -79,17 +77,125 @@ public class MainActivity extends AppCompatActivity
         currentButton.setOnClickListener(this);
         currentButton = findViewById(R.id.quitButton);
         currentButton.setOnClickListener(this);
-
-        // Set up temp button but disable it
-        currentButton = findViewById(R.id.tempButton);
+        currentButton = findViewById(R.id.tempButton); // Set up temp button but disable it
         currentButton.setOnClickListener(this);
         currentButton.setEnabled(false);
-
         currentButton = findViewById(R.id.gpb1Button);
         currentButton.setOnClickListener(this);
         currentButton = findViewById(R.id.gpb2Button);
         currentButton.setOnClickListener(this);
         currentButton = findViewById(R.id.gpb3Button);
         currentButton.setOnClickListener(this);
+
+        // Set up toggle buttons
+        currentToggleButton = findViewById(R.id.led1ToggleButton);
+        currentToggleButton.setOnCheckedChangeListener(this);
+        currentToggleButton = findViewById(R.id.led2ToggleButton);
+        currentToggleButton.setOnCheckedChangeListener(this);
+        currentToggleButton = findViewById(R.id.led3ToggleButton);
+        currentToggleButton.setOnCheckedChangeListener(this);
+        currentToggleButton = findViewById(R.id.led4ToggleButton);
+        currentToggleButton.setOnCheckedChangeListener(this);
+    }
+
+
+    /**
+     * onClick handler that acts on the buttons being clicked.
+     * @param view The button being clicked.
+     */
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.updateIPButton:
+                update("IP Address Button Clicked.");
+                break;
+            case R.id.updatePortButton:
+                update("Port Button Clicked.");
+                break;
+            case R.id.connectButton:
+                commandHandler.execute("connect");
+                break;
+            case R.id.disconnectButton:
+                commandHandler.execute("d");
+                break;
+            case R.id.quitButton:
+                commandHandler.execute("q");
+                break;
+            case R.id.tempButton:
+                commandHandler.execute("temp");
+                break;
+            case R.id.gpb1Button:
+                commandHandler.execute("gpb1");
+                break;
+            case R.id.gpb2Button:
+                commandHandler.execute("gpb2");
+                break;
+            case R.id.gpb3Button:
+                commandHandler.execute("gpb3");
+                break;
+        }
+    }
+
+
+    /**
+     * onCheckedChanged event handler that acts on any of the toggle buttons being clicked.
+     * @param btn The compound button being clicked
+     * @param checked true if button is ON, false if OFF
+     */
+    @Override
+    public void onCheckedChanged(CompoundButton btn, boolean checked) {
+        switch(btn.getId()) {
+            case R.id.led1ToggleButton:
+                if (checked) {
+                    commandHandler.execute("L1on");
+                } else {
+                    commandHandler.execute("L1off");
+                }
+                break;
+            case R.id.led2ToggleButton:
+                if (checked) {
+                    commandHandler.execute("L2on");
+                } else {
+                    commandHandler.execute("L2off");
+                }
+                break;
+            case R.id.led3ToggleButton:
+                if (checked) {
+                    commandHandler.execute("L3on");
+                } else {
+                    commandHandler.execute("L3off");
+                }
+                break;
+            case R.id.led4ToggleButton:
+                if (checked) {
+                    commandHandler.execute("L4on");
+                } else {
+                    commandHandler.execute("L4off");
+                }
+                break;
+        }
+    }
+
+
+    /**
+     * static Handler class avoids memory leaks. Handles messages by outputting a message to the
+     * server message text area.
+     *
+     * (Instances of static inner classes do not hold an implicit reference to their outer class.)
+     */
+    private static class MyHandler extends Handler {
+        private final WeakReference<MainActivity> mActivity;
+
+        public MyHandler(MainActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MainActivity activity = mActivity.get();
+            if (activity != null) {
+                activity.serverMessageTextArea.setText(msg.obj.toString());
+            }
+        }
     }
 }
