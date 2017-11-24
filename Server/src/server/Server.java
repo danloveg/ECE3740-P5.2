@@ -13,7 +13,7 @@ public class Server implements Runnable{
     Socket clientSocket = null;
     clientmessagehandler.ClientMessageHandler myClientCommandHandler;
     userinterface.UserInterface myUI;
-    int portNumber = 5555, backlog = 500;
+    int portNumber = 8765, backlog = 500;
     boolean doListen = false;
     
 
