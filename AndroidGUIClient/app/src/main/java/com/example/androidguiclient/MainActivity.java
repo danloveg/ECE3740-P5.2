@@ -1,6 +1,5 @@
 package com.example.androidguiclient;
 
-import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -8,17 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
-import org.w3c.dom.Text;
 
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity
         implements userinterface.Userinterface, View.OnClickListener,
@@ -66,39 +60,6 @@ public class MainActivity extends AppCompatActivity
         Message msg = Message.obtain();
         msg.obj = message;
         handler.sendMessage(msg);
-    }
-
-
-    /**
-     * Try to set the Client's port to a new number. Converts the string to a number and uses that
-     * as the new port number. If there is a NumberFormatException, it will not update the port.
-     * @param newPortNumber The string containing the port number
-     */
-    private void setClientPort(String newPortNumber) {
-        try {
-            int port = Integer.parseInt(newPortNumber);
-            myClient.setPort(port);
-            this.update("Port number set to " + newPortNumber);
-        } catch (NumberFormatException e) {
-            this.update(newPortNumber + " is not a number.");
-        }
-    }
-
-
-    /**
-     * Try to set the Client's ip to a new address. Tries to convert the string to an address, if
-     * there is a NumberFormatException, it will not update the port.
-     * @param newIPAddress The string containing the port number
-     */
-    private void setClientIPAddress(String newIPAddress) {
-        // Try to create a new IP address
-        try {
-            InetAddress address = InetAddress.getByName(newIPAddress);
-            myClient.setIpAddress(address);
-            this.update("IP set to: " + newIPAddress);
-        } catch (UnknownHostException e) {
-            this.update("Could not create IP: " + newIPAddress);
-        }
     }
 
 
@@ -152,12 +113,12 @@ public class MainActivity extends AppCompatActivity
             case R.id.updateIPButton:
                 String newIPAddress =
                         ((TextView) findViewById(R.id.ipAddressField)).getText().toString();
-                setClientIPAddress(newIPAddress);
+                commandHandler.execute("SetIP " + newIPAddress);
                 break;
             case R.id.updatePortButton:
                 String newPortNumber =
                         ((TextView) findViewById(R.id.portNumberField)).getText().toString();
-                setClientPort(newPortNumber);
+                commandHandler.execute("SetPort " + newPortNumber);
                 break;
             case R.id.connectButton:
                 commandHandler.execute("connect");
