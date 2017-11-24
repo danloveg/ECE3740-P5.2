@@ -1,10 +1,12 @@
 package com.example.androidguiclient;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -114,11 +116,13 @@ public class MainActivity extends AppCompatActivity
                 String newIPAddress =
                         ((TextView) findViewById(R.id.ipAddressField)).getText().toString();
                 commandHandler.execute("SetIP " + newIPAddress);
+                hideKeyboard(this);
                 break;
             case R.id.updatePortButton:
                 String newPortNumber =
                         ((TextView) findViewById(R.id.portNumberField)).getText().toString();
                 commandHandler.execute("SetPort " + newPortNumber);
+                hideKeyboard(this);
                 break;
             case R.id.connectButton:
                 commandHandler.execute("connect");
@@ -182,6 +186,23 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
         }
+    }
+
+
+    /**
+     * Hides the keyboard for the activity passed.
+     * @param activity The activity for which to hide the keyboard.
+     */
+    private static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        // Get the currently focused view
+        View view = activity.getCurrentFocus();
+        // If no view has focus, create a new one
+        if (view == null) {
+            view = new View(activity);
+        }
+        // Hide keyboard
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 
